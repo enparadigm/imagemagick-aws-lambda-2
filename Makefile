@@ -6,7 +6,7 @@ TARGET ?=/opt/
 MOUNTS = -v $(PROJECT_ROOT):/var/task \
 	-v $(PROJECT_ROOT)result:$(TARGET)
 
-DOCKER = docker run -it --rm -w=/var/task/build
+DOCKER = docker run --platform linux/amd64 -it --rm -w=/var/task/build
 build result: 
 	mkdir $@
 
@@ -23,7 +23,8 @@ all libs:
 	$(DOCKER) $(MOUNTS) --entrypoint /usr/bin/make -t $(DOCKER_IMAGE) TARGET_DIR=$(TARGET) -f ../Makefile_ImageMagick $@
 
 
-STACK_NAME ?= imagemagick-layer 
+STACK_NAME ?= sharpsell-imagemagick-lambda-layer 
+DEPLOYMENT_BUCKET ?= sharpsell-imagemagick-lambda-layer
 
 result/bin/identify: all
 
